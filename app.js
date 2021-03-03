@@ -7,7 +7,10 @@ var logger = require('morgan');
 
 // 导入路由中间件
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var userRouter = require('./routes/user');
+var roomRouter = require('./routes/room');
+var meetingRouter = require('./routes/meeting');
+var statisticsRouter = require('./routes/statistics');
 
 // 创建express实例
 var app = express();
@@ -33,20 +36,21 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', userRouter);
+app.use('/room', roomRouter);
+app.use('/meeting', meetingRouter);
+app.use('/statistics', statisticsRouter);
 
-// catch 404 and forward to error handler
+// 捕抓错误并抛出
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// 错误处理
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
