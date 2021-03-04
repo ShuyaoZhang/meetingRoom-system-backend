@@ -4,9 +4,31 @@ var {
   user
 } = require('../modules/user');
 
-// 获取落地页列表(可通过name过滤)
-router.get('/list', function (req, res, next) {
-  user.get(req, res, next);
+// 登录
+router.post('/login', function(req, res, next) {
+  user.login(req, res, next);
 });
+// 注册
+router.post('/register', function(req, res, next) {
+  user.register(req, res, next);
+});
+// 获取用户列表(可通过username或者用户角色过滤)
+router.get('/list', function (req, res, next) {
+  user.list(req, res, next);
+});
+// 删除
+router.delete('/delete', function (req, res, next) {
+  user.delete(req, res, next);
+});
+// 更新（设置、移除管理员角色）
+router.post('/update', function(req, res, next) {
+  user.update(req, res, next);
+});
+// 个人信息
+router.get('/info', function(req, res, next) {
+  user.info(req, res, next);
+});
+
+
 
 module.exports = router;
