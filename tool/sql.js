@@ -14,15 +14,8 @@ var page = {
   roomUpdate:'update room set roomName=?,roomNum=?,roomLocation=?,projector=?,display=?,whiteboard=?,blackboard=?,building=? where id=?',
   roomDelete:'delete from room WHERE id=?',
 
-  // 落地页
-  pageSelect:"select id,page_key,name,title,main_img,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') create_time,DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time from landpages",
-  pageSelectById:'select * from landpages WHERE id=?',
-  pageSelectByKey:'select * from landpages WHERE page_key=?',
-  pageInsert:'INSERT INTO landpages(page_key,name,title,apk_url,main_img,components,create_time,update_time) VALUES(?,?,?,?,?,?,?,?)',
-  pageUpdate:'UPDATE landpages SET page_key=?,name=?,title=?,apk_url=?,main_img=?,components=?,update_time=? WHERE id=?',
-  pageDelete:'DELETE FROM landpages WHERE id=?',
-
-  // 上传
-  upload:'INSERT INTO upload(url, upload_time) VALUES(?,?)',
+  // 会议
+  meetingSelect:"select meeting.*,DATE_FORMAT(meetingDate,'%Y-%m-%d') meetingDate, room.roomName,room.building,room.roomLocation, room.projector,room.display,room.whiteboard,room.blackboard,user.username as bookPerson,(SELECT t.username FROM USER t WHERE meeting.approvePersonId = t.id) approvePerson FROM meeting,room,USER WHERE meeting.roomId = room.id AND meeting.bookPersonId = user.id ",
+  meetingApprove:'update meeting set approveResult=?,rejectReason=?,approvePersonId=? where id=?',
 };
 module.exports = page;
