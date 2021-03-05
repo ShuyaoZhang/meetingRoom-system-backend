@@ -6,7 +6,14 @@ var page = {
   userInsert: 'insert into user(username,password,role,created_at,updated_at) values(?,?,?,?,?)',
   userList: "select id,username,role,DATE_FORMAT(created_at,'%Y-%m-%d %H:%i:%s') created_at,DATE_FORMAT(updated_at,'%Y-%m-%d %H:%i:%s') updated_at from user",
   userDelete:'delete from user WHERE id=?',
-  userUpdate:'update user SET role=?,created_at=? WHERE id=?',
+  userUpdate:'update user set role=?,updated_at=? WHERE id=?',
+
+  // 会议室
+  roomSelect:'select * from room',
+  roomAdd:'insert into room(roomName,roomNum,roomLocation,projector,display,whiteboard,blackboard,building) values(?,?,?,?,?,?,?,?)',
+  roomUpdate:'update room set roomName=?,roomNum=?,roomLocation=?,projector=?,display=?,whiteboard=?,blackboard=?,building=? where id=?',
+  roomDelete:'delete from room WHERE id=?',
+
   // 落地页
   pageSelect:"select id,page_key,name,title,main_img,DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') create_time,DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time from landpages",
   pageSelectById:'select * from landpages WHERE id=?',
