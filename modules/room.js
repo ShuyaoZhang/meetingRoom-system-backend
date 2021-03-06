@@ -70,6 +70,33 @@ var room = {
             });
         }); 
     },
+    // 会议室预订时查询（通过条件查询可用会议室）
+    selectByCondition:function (req, res, next) {
+        let sqlSelect = sql.roomSelectByCondition
+        let q = req.query
+        if (q.building != 0) {
+            sqlSelect += " and building =" + q.building
+        }
+        if (q.display == 1) {
+            sqlSelect += " and display = 1" 
+        }
+        if (q.projector == 1) {
+            sqlSelect += " and projector = 1" 
+        }
+        if (q.whiteboard == 1) {
+            sqlSelect += " and whiteboard = 1" 
+        }
+        if (q.blackboard == 1) {
+            sqlSelect += " and blackboard = 1" 
+        } 
+        pool.getConnection(function (err, connection) {
+            connection.query(sqlSelect, [q.num,q.date,q.startTime,q.date,q.endTime],function (err, result) { // 分页查询
+                console.log(result)
+                json(res, err, result);
+                connection.release();
+            });
+        });  
+    }
 };
 
 module.exports = {

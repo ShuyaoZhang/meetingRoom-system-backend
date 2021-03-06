@@ -13,10 +13,13 @@ router.get('/list', function (req, res, next) {
 router.get('/query', function (req, res, next) {
   meeting.query(req, res, next);
 });
+// 会议预订
+router.post('/book', function (req, res, next) {
+  meeting.book(req, res, next);
+});
 // 审批预订
 router.post('/approve', function (req, res, next) {
   meeting.approve(req, res, next);
 });
-
 
 module.exports = router;

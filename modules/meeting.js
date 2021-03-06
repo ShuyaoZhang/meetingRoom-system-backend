@@ -24,6 +24,8 @@ var meeting = {
         let count = 0 // 总数
         pool.getConnection(function (err, connection) {
             connection.query(sqlSelect, function (err, result) { // 获取总条数
+                console.log(result)
+                console.log(result.length)
                 count = result.length
                 connection.release();
                 pool.getConnection(function (err, connection) {
@@ -49,6 +51,16 @@ var meeting = {
                 connection.release();
             });
         });
+    },
+    // 会议预订
+    book: function (req, res, next) {
+        var p = req.body;
+        pool.getConnection(function (err, connection) {
+            connection.query(sql.meetingBook,[p.roomId,p.num,p.meetingTheme,p.date,p.startTime,p.endTime,0], function (err, result) { // 分页查询
+                json(res, err, null);
+                connection.release();
+            });
+        });   
     },
     // 审批预订
     approve: function (req, res, next) {

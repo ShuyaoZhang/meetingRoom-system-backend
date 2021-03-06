@@ -21,6 +21,10 @@ router.post('/update', function(req, res, next) {
 router.delete('/delete', function (req, res, next) {
   room.delete(req, res, next);
 });
+// 会议室预订时查询（通过条件查询可用会议室）
+router.get('/selectByCondition', function (req, res, next) {
+  room.selectByCondition(req, res, next);
+});
 
 
 module.exports = router;
