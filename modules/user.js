@@ -1,9 +1,17 @@
+// 引入express框架并创建app
+var express = require('express');
+var app = express();
+// 设置加密秘钥
+app.set('superSecret','myjwttest'); 
+
 // 引入SQL模块
 var sql = require('../tool/sql');
 // 引入json模块
 var json = require('../tool/json');
 // 引入连接池
 var pool = require('../tool/pool');
+// 引入jwt依赖
+var jwt = require('jsonwebtoken')
 
 // 用户
 var user = {
@@ -20,9 +28,14 @@ var user = {
                 } else {
                     var resultArray = result[0]; // 接口返回值
                     if (resultArray.password === param.password) { // 密码正确
+                        // 将用户ID、用户名和密码存在token中，获取验证结果后可通过ID获取用户相关信息
+                        var token = jwt.sign({id:resultArray.id,...param},app.get('superSecret'),{// 利用jwt生成token
+                            expiresIn : 60*60*24 // 24小时有效期
+                        })
                         var obj = {
                             username: resultArray.username,
-                            role: resultArray.role
+                            role: resultArray.role,
+                            token:token
                         }
                         json(res, err, obj);
                     } else { // 密码错误

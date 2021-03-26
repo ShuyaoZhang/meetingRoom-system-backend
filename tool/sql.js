@@ -17,8 +17,13 @@ var page = {
 
   // 会议
   meetingSelect:"select meeting.*,DATE_FORMAT(meetingDate,'%Y-%m-%d') meetingDate, room.roomName,room.building,room.roomLocation, room.projector,room.display,room.whiteboard,room.blackboard,user.username as bookPerson,(SELECT t.username FROM USER t WHERE meeting.approvePersonId = t.id) approvePerson FROM meeting,room,USER WHERE meeting.roomId = room.id AND meeting.bookPersonId = user.id ",
-  meetingBook:"insert into meeting(roomId,meetingNum,meetingTheme,meetingDate,startTime,endTime,approveResult) values(?,?,?,?,?,?,?)",
+  meetingRecord:"select meeting.*,DATE_FORMAT(meetingDate,'%Y-%m-%d') meetingDate, room.roomName,room.building,room.roomLocation, room.projector,room.display,room.whiteboard,room.blackboard FROM meeting,room WHERE meeting.roomId = room.id",
+  meetingBook:"insert into meeting(bookPersonId,roomId,meetingNum,meetingTheme,meetingDate,startTime,endTime,approveResult) values(?,?,?,?,?,?,?,?)",
   meetingApprove:'update meeting set approveResult=?,rejectReason=?,approvePersonId=? where id=?',
+
+  // 数据统计
+  roomNumInBuilding:'select count(id) as count from room',
+  meetingNum:'select count(meeting.id) as count from meeting,room where room.id = meeting.roomId',
 
 };
 module.exports = page;

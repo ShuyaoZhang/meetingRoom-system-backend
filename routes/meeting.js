@@ -13,6 +13,11 @@ router.get('/list', function (req, res, next) {
 router.get('/query', function (req, res, next) {
   meeting.query(req, res, next);
 });
+// 通过token获取用户本人预订记录（筛选会议是否开始）
+router.get('/record', function (req, res, next) {
+  meeting.record(req, res, next);
+});
+
 // 会议预订
 router.post('/book', function (req, res, next) {
   meeting.book(req, res, next);

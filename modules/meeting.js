@@ -4,6 +4,7 @@ var sql = require('../tool/sql');
 var json = require('../tool/json');
 // 引入连接池
 var pool = require('../tool/pool');
+var {getCurrentDate} = require('../tool/method');
 
 // 会议
 var meeting = {
@@ -52,11 +53,45 @@ var meeting = {
             });
         });
     },
+    // 通过token获取用户本人预订记录（筛选会议是否开始）
+    record: function (req, res, next) {
+        let sqlSelect = sql.meetingRecord + ' AND meeting.bookPersonId = ' + req.decoded.id
+
+        let date = getCurrentDate().date
+        let time = getCurrentDate().time
+        if(req.query.statusId === '1'){// 未开始（当前时间<会议开始时间）
+            sqlSelect += " AND UNIX_TIMESTAMP(CONCAT('"+ date +"',"+ "' " + time + "')) < UNIX_TIMESTAMP(CONCAT(meeting.meetingDate,"+"' '"+',meeting.startTime))'
+        }else if(req.query.statusId === '2'){// 正在进行（当前时间>=会议开始时间 && 当前时间<=会议结束时间）
+            sqlSelect += " AND UNIX_TIMESTAMP(CONCAT('"+ date +"',"+ "' " + time + "')) >= UNIX_TIMESTAMP(CONCAT(meeting.meetingDate,"+"' '"+',meeting.startTime))' + " AND UNIX_TIMESTAMP(CONCAT('"+ date +"',"+ "' " + time + "')) <= UNIX_TIMESTAMP(CONCAT(meeting.meetingDate,"+"' '"+',meeting.endTime))'      
+        }else{// 已结束（当前时间>会议结束时间）
+            sqlSelect += " AND UNIX_TIMESTAMP(CONCAT('"+ date +"',"+ "' " + time + "')) > UNIX_TIMESTAMP(CONCAT(meeting.meetingDate,"+"' '"+',meeting.endTime))'
+        }
+       
+        let index = (req.query.page - 1) * req.query.pageSize // 分页查询索引
+        let userSelect = sqlSelect + " limit " + index + ',' + req.query.pageSize
+        let count = 0 // 总数
+        pool.getConnection(function (err, connection) {
+            connection.query(sqlSelect, function (err, result) { // 获取总条数
+                count = result.length
+                connection.release();
+                pool.getConnection(function (err, connection) {
+                    connection.query(userSelect, function (err, result) { // 分页查询
+                        let obj = {
+                            list: result,
+                            count: count
+                        }
+                        json(res, err, obj);
+                        connection.release();
+                    });
+                });
+            });
+        });
+    },
     // 会议预订
     book: function (req, res, next) {
         var p = req.body;
         pool.getConnection(function (err, connection) {
-            connection.query(sql.meetingBook,[p.roomId,p.num,p.meetingTheme,p.date,p.startTime,p.endTime,0], function (err, result) { // 分页查询
+            connection.query(sql.meetingBook,[req.decoded.id,p.roomId,p.num,p.meetingTheme,p.date,p.startTime,p.endTime,0], function (err, result) { // 分页查询
                 json(res, err, null);
                 connection.release();
             });
