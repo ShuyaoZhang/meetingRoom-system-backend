@@ -4,6 +4,10 @@ var {
   statistics
 } = require('../modules/statistics');
 
+// 获取面板数据
+router.get('/pannelData', function (req, res, next) {
+  statistics.pannelData(req, res, next);
+});
 // 获取各建筑楼会议室数量
 router.get('/roomNumInBuilding', function (req, res, next) {
   statistics.roomNumInBuilding(req, res, next);

@@ -17,11 +17,11 @@ const change = function (val, arr, id = 'id', field = 'name') {
 }
 
 // 获取当前时间 YY-MM-DD HH:MM
-const getCurrentDate = function() {
+const getCurrentDate = function(addDate) {
     let date = new Date();
     let seperator = "-";
 
-    let currentDate = date.getFullYear() + seperator + addZero(date.getMonth() + 1) + seperator + addZero(date.getDate());
+    let currentDate = date.getFullYear() + seperator + addZero(date.getMonth() + 1) + seperator + addZero(date.getDate()+addDate);
     let currentTime = date.getHours() + ':' + addZero(date.getMinutes())
     return {
         date:currentDate,

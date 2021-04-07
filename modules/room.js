@@ -21,7 +21,7 @@ var room = {
             }
         }
         let index = (req.query.page - 1) * req.query.pageSize // 分页查询索引
-        let userSelect = sqlSelect + " limit " + index + ',' + req.query.pageSize
+        let userSelect = sqlSelect +" order by id desc" +" limit " + index + ',' + req.query.pageSize
         let count = 0 // 总数
         pool.getConnection(function (err, connection) {
             connection.query(sqlSelect, function (err, result) { // 获取总条数

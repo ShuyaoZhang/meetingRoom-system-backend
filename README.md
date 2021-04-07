@@ -2,24 +2,39 @@
 
 > 校园会议室管理系统,采用node.js的Express框架搭建,采用MySQL数据库存储数据
 
-## 构建命令行
+## 目录结构
+- bin ——www：用来开启服务器的脚本 
+- config： 数据库配置
+- modules: 各个模块的后端逻辑处理（接收请求参数、返回响应内容）
+- node_modules:依赖包 
+- public:（暂不使用）
+- routes：各个模块的路由链接，通过next给modules里逻辑处理
 
-```bash
-# 克隆项目
-git clone https://github.com/ShuyaoZhang/meetingRoom-system-backend
 
-# 进入项目目录
-cd meetingRoom-system-backend
+  —— index.js: 进行路由拦截并校验token的有效性
+- tool:工具函数
 
-# 安装依赖
-npm install
+  —— json.js: 处理后端接口返回的参数形式
+  
+  —— keyValue.js:键值对
 
-# 启动服务
-npm start
-```
+  —— method.js: 公共函数（时间处理函数）
 
-浏览器访问 [http://localhost:3000](http://localhost:3000)
+  —— pool.js:创建连接池
 
+  —— poolextend.js:通过数据库参数配置数据库
+
+  —— sql.js:项目中数据库查询语句
+
+- views 
+
+   ——index.ejs：主页的模板文件 
+
+   ——error.ejs：主页的模板文件 
+- .gitignore  git创建仓库时忽略的文件
+- app.js：项目入口文件
+- package.json: 项目包管理文件
+- README.md: 项目说明文件
 
 ## 环境准备
 node（版本不限）

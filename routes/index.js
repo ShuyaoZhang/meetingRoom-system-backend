@@ -10,9 +10,9 @@ router.get('/', function (req, res, next) {
     title: 'Express'
   });
 });
-// 设置拦截，用来验证JWT（跳过预检OPTIONS和登录）
+// 设置拦截，用来验证JWT（跳过预检OPTIONS和登录注册）
 router.use(function (req, res, next) {
-  if (req.method == 'OPTIONS' || req.originalUrl == '/user/login') {
+  if (req.method == 'OPTIONS' || req.originalUrl == '/user/login' || req.originalUrl == '/user/register') {
     next();
   } else {
     var token = req.headers['access-token']

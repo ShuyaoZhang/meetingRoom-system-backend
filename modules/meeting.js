@@ -21,7 +21,7 @@ var meeting = {
             sqlSelect += " and approveResult = " + req.query.status
         }       
         let index = (req.query.page - 1) * req.query.pageSize // 分页查询索引
-        let userSelect = sqlSelect + " limit " + index + ',' + req.query.pageSize
+        let userSelect = sqlSelect +" order by id desc" + " limit " + index + ',' + req.query.pageSize
         let count = 0 // 总数
         pool.getConnection(function (err, connection) {
             connection.query(sqlSelect, function (err, result) { // 获取总条数
@@ -57,8 +57,8 @@ var meeting = {
     record: function (req, res, next) {
         let sqlSelect = sql.meetingRecord + ' AND meeting.bookPersonId = ' + req.decoded.id
 
-        let date = getCurrentDate().date
-        let time = getCurrentDate().time
+        let date = getCurrentDate(0).date
+        let time = getCurrentDate(0).time
         if(req.query.statusId === '1'){// 未开始（当前时间<会议开始时间）
             sqlSelect += " AND UNIX_TIMESTAMP(CONCAT('"+ date +"',"+ "' " + time + "')) < UNIX_TIMESTAMP(CONCAT(meeting.meetingDate,"+"' '"+',meeting.startTime))'
         }else if(req.query.statusId === '2'){// 正在进行（当前时间>=会议开始时间 && 当前时间<=会议结束时间）
@@ -68,7 +68,7 @@ var meeting = {
         }
        
         let index = (req.query.page - 1) * req.query.pageSize // 分页查询索引
-        let userSelect = sqlSelect + " limit " + index + ',' + req.query.pageSize
+        let userSelect = sqlSelect +" order by id desc" + " limit " + index + ',' + req.query.pageSize
         let count = 0 // 总数
         pool.getConnection(function (err, connection) {
             connection.query(sqlSelect, function (err, result) { // 获取总条数

@@ -11,6 +11,7 @@ var userRouter = require('./routes/user');
 var roomRouter = require('./routes/room');
 var meetingRouter = require('./routes/meeting');
 var statisticsRouter = require('./routes/statistics');
+var buildingRouter = require('./routes/building');
 
 // 创建express实例
 var app = express();
@@ -40,6 +41,7 @@ app.use('/user', userRouter);
 app.use('/room', roomRouter);
 app.use('/meeting', meetingRouter);
 app.use('/statistics', statisticsRouter);
+app.use('/building', buildingRouter);
 
 // 捕抓错误并抛出
 app.use(function(req, res, next) {
