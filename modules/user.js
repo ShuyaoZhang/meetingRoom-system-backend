@@ -123,18 +123,6 @@ var user = {
             });
         }); 
     },
-    // 个人信息
-    userCenter: function (req, res, next) {
-        pool.getConnection(function (err, connection) {
-            var param = req.query;
-            connection.query(sql.userSelect, param.tel, function (err, result) {
-                console.log(result)
-                json(res, result[0]);
-                // 释放连接
-                connection.release();
-            });
-        });
-    },
 };
 
 module.exports = {

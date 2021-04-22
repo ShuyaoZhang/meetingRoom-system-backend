@@ -91,7 +91,6 @@ var room = {
         } 
         pool.getConnection(function (err, connection) {
             connection.query(sqlSelect, [q.num,q.date,q.startTime,q.date,q.endTime],function (err, result) { // 分页查询
-                console.log(result)
                 json(res, err, result);
                 connection.release();
             });

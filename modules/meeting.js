@@ -25,8 +25,6 @@ var meeting = {
         let count = 0 // 总数
         pool.getConnection(function (err, connection) {
             connection.query(sqlSelect, function (err, result) { // 获取总条数
-                console.log(result)
-                console.log(result.length)
                 count = result.length
                 connection.release();
                 pool.getConnection(function (err, connection) {
@@ -101,7 +99,7 @@ var meeting = {
     approve: function (req, res, next) {
         var p = req.body;
         pool.getConnection(function (err, connection) {
-            connection.query(sql.meetingApprove,[p.approveResult,p.rejectReason,1,p.id], function (err, result) { // 分页查询
+            connection.query(sql.meetingApprove,[p.approveResult,p.rejectReason,req.decoded.id,p.id], function (err, result) { // 分页查询
                 json(res, err, null);
                 connection.release();
             });

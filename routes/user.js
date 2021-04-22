@@ -24,10 +24,6 @@ router.delete('/delete', function (req, res, next) {
 router.post('/update', function(req, res, next) {
   user.update(req, res, next);
 });
-// 个人信息
-router.get('/info', function(req, res, next) {
-  user.info(req, res, next);
-});
 
 
 module.exports = router;
